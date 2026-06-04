@@ -7,7 +7,15 @@
         "owner": "iankiller77",
         "category": "General",
         "versions": [
-		{
+            {
+                "version": "1.5.1.2",
+                "changelog": "Added Import save reason to trigger sync",
+                "targetAbi": "10.11.0",
+                "sourceUrl": "https://github.com/wedsa5/MyAnimeSync/releases/download/v1.5.1.2/myanimesync_1.5.1.2.zip",
+                "checksum": "5c1282acc3b614bfc1d26d2a0ee5d296",
+                "timestamp": "2026-06-04T01:40:20Z"
+            },
+            {
                 "version": "1.5.1.1",
                 "changelog": "Improved logs, UI and better handling of authentication parameters to better support futur issues.\n1. refactor/fixed_warnings_for_TVDB_token_update\n2. refactor/add_more_logs_for_authentication_process\n3. refactor/correct_user_config_client_id_and_secret_before_generating_auth_code_url",
                 "targetAbi": "10.11.0",
@@ -15,7 +23,7 @@
                 "checksum": "98a889d26341268caeb0df01c29d2870",
                 "timestamp": "2025-11-27T18:54:00Z"
             },
-		{
+            {
                 "version": "1.5.1.0",
                 "changelog": "Added option to search for serie using original name",
                 "targetAbi": "10.11.0",
@@ -23,7 +31,7 @@
                 "checksum": "d5df25c7c7f5ae87f776d96e6eb1b4e8",
                 "timestamp": "2025-11-27T18:54:00Z"
             },
-		{
+            {
                 "version": "1.5.0.1",
                 "changelog": "Updated code to work with jellyfin 10.11.x",
                 "targetAbi": "10.11.0",
@@ -31,7 +39,7 @@
                 "checksum": "3d4551e5bfbbc33dc5e416d1961f7c99",
                 "timestamp": "2025-11-27T18:54:00Z"
             },
-		{
+            {
                 "version": "1.5.0.0",
                 "changelog": "Feature: add option for full anime list update from jellyfin watch status.\nFeature: add option to handle specials.",
                 "targetAbi": "10.9.2",
@@ -39,7 +47,7 @@
                 "checksum": "7c411918adfd33fefd0d33d3603e5071",
                 "timestamp": "2025-11-27T18:54:00Z"
             },
-	    {
+            {
                 "version": "1.4.2.2",
                 "changelog": "Fixed a bug where updating animelist season 0 (specials) was updating anime list as if it was the first season instead.",
                 "targetAbi": "10.9.2",
@@ -47,7 +55,7 @@
                 "checksum": "f2c0384475d673ca6e3711f2466fe55a",
                 "timestamp": "2025-06-10T18:36:00Z"
             },
-	    {
+            {
                 "version": "1.4.2.1",
                 "changelog": "Fixed an issue with bulk update causing wrong episode number to be updated.",
                 "targetAbi": "10.9.2",
@@ -55,7 +63,7 @@
                 "checksum": "10ee79b0b3e98a690fbe3d8981b5f3c6",
                 "timestamp": "2025-06-06T13:56:00Z"
             },
-	    {
+            {
                 "version": "1.4.2.0",
                 "changelog": "Added an option to delete a user config.\nFixed a bug where incomplete config would cause the token update task to fail.",
                 "targetAbi": "10.9.2",

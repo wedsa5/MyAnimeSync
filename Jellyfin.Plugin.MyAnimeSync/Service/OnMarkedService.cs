@@ -356,7 +356,7 @@ namespace Jellyfin.Plugin.MyAnimeSync.Service
         private async void OnUserDataMarkedPlayed(object? sender, UserDataSaveEventArgs eventArgs)
         {
             // If we have a new video marked as played.
-            if ((eventArgs.SaveReason == UserDataSaveReason.TogglePlayed || eventArgs.SaveReason == UserDataSaveReason.PlaybackFinished) && eventArgs.UserData.Played)
+            if ((eventArgs.SaveReason == UserDataSaveReason.TogglePlayed || eventArgs.SaveReason == UserDataSaveReason.PlaybackFinished || eventArgs.SaveReason == UserDataSaveReason.Import) && eventArgs.UserData.Played)
             {
                 // Check if the user has a config!
                 var userID = eventArgs.UserId;

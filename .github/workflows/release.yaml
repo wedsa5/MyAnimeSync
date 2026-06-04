@@ -1,0 +1,64 @@
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version (e.g. 1.5.1.2)'
+        required: true
+      changelog:
+        description: 'Changelog'
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Build
+        run: dotnet publish Jellyfin.Plugin.MyAnimeSync/Jellyfin.Plugin.MyAnimeSync.csproj --configuration Release --output bin
+
+      - name: Package
+        run: |
+          cd bin
+          zip ../myanimesync_${{ inputs.version }}.zip Jellyfin.Plugin.MyAnimeSync.dll
+
+      - name: Checksum
+        id: checksum
+        run: echo "md5=$(md5sum myanimesync_${{ inputs.version }}.zip | awk '{print $1}')" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.version }}
+          name: v${{ inputs.version }}
+          body: ${{ inputs.changelog }}
+          files: myanimesync_${{ inputs.version }}.zip
+
+      - name: Update manifest
+        run: |
+          node -e "
+          const fs = require('fs');
+          const manifest = JSON.parse(fs.readFileSync('manifest.json', 'utf8'));
+          manifest[0].versions.unshift({
+            version: '${{ inputs.version }}',
+            changelog: '${{ inputs.changelog }}',
+            targetAbi: '10.11.0',
+            sourceUrl: 'https://github.com/${{ github.repository }}/releases/download/v${{ inputs.version }}/myanimesync_${{ inputs.version }}.zip',
+            checksum: '${{ steps.checksum.outputs.md5 }}',
+            timestamp: new Date().toISOString().replace(/\.\d{3}Z$/, 'Z')
+          });
+          fs.writeFileSync('manifest.json', JSON.stringify(manifest, null, 4));
+          "
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add manifest.json
+          git commit -m "Release v${{ inputs.version }}"
+          git push

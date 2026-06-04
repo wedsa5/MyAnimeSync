@@ -355,6 +355,13 @@ namespace Jellyfin.Plugin.MyAnimeSync.Service
         /// <param name="eventArgs">Informations about the event.<see cref="UserDataSaveEventArgs"/>.</param>
         private async void OnUserDataMarkedPlayed(object? sender, UserDataSaveEventArgs eventArgs)
         {
+            _logger.LogInformation(
+                "UserDataSaved fired: Reason={Reason}, Played={Played}, ItemType={ItemType}, Item={Item}",
+                eventArgs.SaveReason,
+                eventArgs.UserData.Played,
+                eventArgs.Item?.GetType().Name,
+                eventArgs.Item?.Name);
+
             // If we have a new video marked as played.
             if ((eventArgs.SaveReason == UserDataSaveReason.TogglePlayed || eventArgs.SaveReason == UserDataSaveReason.PlaybackFinished || eventArgs.SaveReason == UserDataSaveReason.Import) && eventArgs.UserData.Played)
             {
@@ -392,8 +399,17 @@ namespace Jellyfin.Plugin.MyAnimeSync.Service
                         return;
                     }
 
+                    _logger.LogInformation(
+                        "Library check: ContainingFolderPath={Path}, MonitoredGuids={Guids}, VirtualFolders={Folders}",
+                        folder.ContainingFolderPath,
+                        string.Join(",", userConfig.ListMonitoredLibraryGuid),
+                        string.Join(",", virtualFolders.Select(f => $"{f.ItemId}:{string.Join("|", f.Locations)}")));
+
                     if (!virtualFolders.Any(element => element.Locations.Contains(folder.ContainingFolderPath) && userConfig.ListMonitoredLibraryGuid.Contains(Guid.Parse(element.ItemId))))
                     {
+                        _logger.LogWarning(
+                            "Episode {Serie} not in monitored library, skipping.",
+                            serie);
                         return;
                     }
 
